@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container">
+  <h1
+          class="text-secondary border border-success border-top-0 border-left-0 border-right-0"
+          th:text="#{text.curso.titulo}">Mantenimiento de Cursos 2</h1>
+
+  <p>
+    <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/form}" class="btn btn-success btn-xs">crear curso</a>
+  </p>
+
+  <table class="table table-striped">
+    <thead class="bg-dark">
+    <tr>
+      <th>id</th>
+      <th>nombre</th>
+      <th>creditos</th>
+      <th><a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-xs float-right mx-2"
+             th:href="@{ver(format=pdf)}">PDF</a></th>
+      <th><a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-success btn-xs float-right"
+             th:href="@{ver(format=xlsx)}">XLS</a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="curso: ${cursos}">
+      <td th:text="${curso.id}"></td>
+      <td th:text="${curso.nombre}"></td>
+      <td th:text="${curso.creditos}"></td>
+      <td><a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary btn-xs"
+             th:href="@{/form/} + ${curso.id}" th:text="#{text.boton.editar}">EditarX</a></td>
+      <td><a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-xs"
+             th:href="@{/eliminar/} + ${curso.id}"
+             th:text="'eliminar'" onclick="return
+						   confirm('Estás seguro que quieres eliminar?');">EliminarX</a></td>
+    </tr>
+    </tbody>
+
+  </table>
+</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
+
+
+
